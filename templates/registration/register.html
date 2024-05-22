@@ -1,0 +1,43 @@
+{% extends 'base1.html' %}
+{% load static %}
+
+{% block content %}
+<!-- <h2>Register</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Register</button>
+</form> -->
+<div class="outerBox">
+    <form method="POST" class="signUpForm">
+        {% csrf_token %}
+        <h2>New Account</h2>
+        <div class="inputBox">
+            <input type="text" name="username" id="id_username" required>
+            <label>Username</label>
+        </div>
+        <div class="inputBox">
+            <input type="email" name="email" id="id_email" required>
+            <label>Email</label>
+        </div>
+        <div class="inputBox">
+            <input type="password" name="password1" id="id_password1" required>
+            <label>Create &nbsp Password</label>
+        </div>
+        <div class="inputBox">
+            <input type="password" name="password2" id="id_password2" required>
+            <label>Confirm &nbsp Password</label>
+        </div>
+        <div class="inputBox">
+            <!-- <input type="submit" value="Create"> -->
+            <button class="SignUpButton" type="submit">Sign Up</button>
+        </div>
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </form>
+</div>
+<script>
+    let label = document.querySelectorAll('label').forEach(label => {
+        label.innerHTML = label.innerText.split('').map((Letters, i) => `<span style="transition-delay: ${i * 50}ms">${Letters}</span>`).join('');
+    });
+</script>
+{% endblock %}

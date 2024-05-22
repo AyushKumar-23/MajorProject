@@ -13,7 +13,7 @@ class RatingChoices(models.IntegerChoices):
     THREE = 3
     FOUR = 4
     FIVE = 5
-    __empty__ = 'Rate this'
+    __empty__ = 0
 
 class RatingQuerySet(models.QuerySet):
     def rating(self):

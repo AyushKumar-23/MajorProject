@@ -10,7 +10,33 @@
 
 {% block content %}
 
-{% for instance in object_list %}
+<style>
+    .carousel-container {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .carousel-inner {
+        height: 75vh;
+        /* 40% of the viewport height */
+    }
+
+    .carousel-inner .carousel-item {
+        height: 100%;
+        /* Ensure each carousel item takes the full height */
+    }
+
+    .carousel-inner img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+        /* Ensure the entire image is visible */
+        display: block;
+        margin: auto;
+    }
+</style>
+
+<!-- {% for instance in object_list %}
 <div>
     <h3>{{ instance.title }} </h3>
     <p>{{ instance.description }}</p>
@@ -22,8 +48,133 @@
     {% else %}
     {% endif %}
     {% endfor %}
-
 </div>
-{% endfor %}
+{% endfor %} -->
 
+<section style="height: 90vh;">
+    <h2>🔥 Discover the Best Rated Movies Today! 🌟</h2>
+    <div id="carouselExampleCaptions" class="carousel slide carousel-container">
+        <div class="carousel-indicators">
+            {% for movie in top_movies %}
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ forloop.counter0 }}"
+                class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% endif %}"
+                aria-label="Slide {{ forloop.counter }}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            {% for movie in top_movies %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <a href="{{ movie.get_absolute_url }}">
+                    <img src="{{ movie.parent_banner.url }}" class="d-block w-100" alt="{{ movie.title }}">
+                </a>
+                <div class="carousel-caption d-none d-md-block">
+                    <a href="{{ movie.get_absolute_url }}">
+                        <h5>{{ movie.title }} | Rating: {{ movie.avg_rating|floatformat:1 }}</h5>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+<section class="search">
+    <div class="container">
+        <div id="alert"></div>
+        <form method="GET" action="/search/" class="search-form">
+            <div class="search-flex">
+                <input type="text" name="q" id="search-term" placeholder="Search for a movie or TVshow" />
+                <button class="btn" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="container">
+    <h2>Trending Movies</h2>
+    <div id="popular-movies" class="grid">
+        {% for movie in movies %}
+        <div class="card">
+            <a href="{% url 'movie-detail' slug=movie.slug %}">
+                <img src="{{ movie.parent_banner.url }}" class="card-img-top" alt="{{movie.title}}" />
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{movie.title}}</h5>
+                <p class="card-text">
+                    <small class="text-muted">Release: {{ movie.timestamp|date:"d/m/Y" }}</small>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section style="height: 90vh; margin-top: 6%;">
+    <h2>📣 Freshly Released TV Shows – Binge Now! 🎬</h2>
+    <div id="carouselExampleCaptions2" class="carousel slide carousel-container">
+        <div class="carousel-indicators">
+            {% for show_obj in latest_shows %}
+            <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="{{ forloop.counter0 }}"
+                class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% endif %}"
+                aria-label="Slide {{ forloop.counter }}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            {% for show_obj in latest_shows %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <a href="{{ show_obj.get_absolute_url }}">
+                    <img src="{{ show_obj.parent_banner.url }}" class="d-block w-100" alt="{{ show_obj.title }}">
+                </a>
+                <div class="carousel-caption d-none d-md-block">
+                    <a href="{{ show_obj.get_absolute_url }}">
+                        <h5>{{ show_obj.title }} | Rating: {{ show_obj.avg_rating|floatformat:1 }}</h5>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions2"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions2"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+
+<section class="container">
+    <h2>Popular Shows</h2>
+    <div id="popular-movies" class="grid">
+        {% for show in shows %}
+        <div class="card">
+            <a href="{% url 'show-detail' slug=show.slug %}">
+                <img src="{{ show.parent_banner.url }}" class="card-img-top" alt="{{show.title}}" />
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{show.title}}</h5>
+                <p class="card-text">
+                    <small class="text-muted">Release: {{ show.timestamp|date:"d/m/Y" }}</small>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}

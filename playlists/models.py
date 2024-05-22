@@ -73,6 +73,9 @@ class Playlist(models.Model):
     publish_timestamp = models.DateTimeField(auto_now_add=False, auto_now=False, blank=True, null=True)
     tags = GenericRelation(TaggedItem, related_query_name='playlist')
     ratings = GenericRelation(Rating, related_query_name='playlist')
+
+    parent_banner = models.ImageField(default="noBanner.png",blank=True,null=True)
+
     objects = PlaylistManager()
     
     def __str__(self):

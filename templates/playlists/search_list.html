@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head_title %}
+{{ object.title }} /
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<!-- <h1>{{movie.title}}</h1>
+    <li>
+        <h2><a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a></h2>
+        <p>{{ movie.description }}</p>
+        {% if movie.video %}
+        <video width="320" height="240" controls>
+            <source src="{{ movie.video.video_file.url }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        {% endif %}
+    </li> -->
+
+<section class="search">
+    <div class="container">
+        <div id="alert"></div>
+        <form method="GET" action="/search/" class="search-form">
+            <div class="search-flex">
+                <input type="text" name="q" id="search-term" placeholder="Search for a movie or TVshow" />
+                <button class="btn" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+<section class="container">
+    <h2>{{title}}</h2>
+    <div id="popular-movies" class="grid">
+        {% for instance in object_list %}
+        <div class="card">
+            {% if instance.is_movie %}
+            <a href="{% url 'movie-detail' slug=instance.slug %}">
+                {% else %}
+                <a href="{% url 'show-detail' slug=instance.slug %}">
+                    {% endif %}
+                    <img src="{{ instance.parent_banner.url }}" class="card-img-top" alt="{{instance.title}}" />
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{instance.title}}</h5>
+                    <p class="card-text">
+                        <small class="text-muted">Release: {{ instance.timestamp|date:"d/m/Y" }}</small>
+                    </p>
+                </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

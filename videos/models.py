@@ -32,6 +32,8 @@ class Video(models.Model):
     updated = models.DateTimeField(auto_now=True)
     state = models.CharField(max_length=2, choices=PublishStateOptions.choices, default=PublishStateOptions.DRAFT)
     publish_timestamp = models.DateTimeField(auto_now_add=False, auto_now=False, blank=True, null=True)
+    banner = models.ImageField(default="noBanner.png",blank=True)
+    video_file = models.FileField(upload_to="video/%y",null=True,blank=True)
 
     objects = VideoManager()
 
